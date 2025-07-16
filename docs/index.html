@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wikidata SPARQL 5段階処理 + ある・なし比較</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1>Wikidata SPARQL 5段階処理 + ある・なし比較</h1>
+
+    <div class="controls">
+      <label for="classID">クラスID (例: Q11424 = 映画):</label>
+      <input type="text" id="classID" value="Q11424" placeholder="Q11424" />
+      <button onclick="startDemo()">デモ開始</button>
+    </div>
+
+    <div class="controls">
+      <label for="propertySelect">プロパティ選択:</label>
+      <select id="propertySelect">
+        <option value="">プロパティを選択...</option>
+      </select>
+      <button onclick="stage4()">第4段階実行</button>
+    </div>
+
+    <div class="controls">
+      <label for="propertyID">プロパティID (例: P272 = 制作会社):</label>
+      <input type="text" id="propertyID" value="P272" placeholder="P272" />
+      <label for="valueSelect">値選択:</label>
+      <select id="valueSelect">
+        <option value="">値を選択...</option>
+      </select>
+      <button onclick="stage5()">第5段階実行</button>
+    </div>
+
+    <div class="example">
+      <strong>例:</strong>
+      Q11424 = 映画, Q5 = 人間, Q571 = 本, Q1183543 = アニメ映画<br />
+      P272 = 制作会社, Q907311 = 東宝
+    </div>
+
+    <div class="container">
+      <div class="stage" id="stage1">
+        <h3>第1段階: エンティティの取得</h3>
+        <div class="query-box" id="query1"></div>
+        <div id="result1"></div>
+      </div>
+
+      <div class="stage" id="stage2">
+        <h3>第2段階: プロパティ使用頻度の集計</h3>
+        <div class="query-box" id="query2"></div>
+        <div id="result2"></div>
+      </div>
+
+      <div class="stage" id="stage3">
+        <h3>第3段階: プロパティラベルの取得</h3>
+        <div class="query-box" id="query3"></div>
+        <div id="result3"></div>
+      </div>
+
+      <div class="stage" id="stage4">
+        <h3>第4段階: 選択したプロパティの値一覧</h3>
+        <div class="query-box" id="query4"></div>
+        <div id="result4"></div>
+      </div>
+
+      <div class="stage" id="stage5">
+        <h3>第5段階: ある・なしの比較</h3>
+        <div class="query-box" id="query5a"></div>
+        <div id="result5a"></div>
+        <div class="query-box" id="query5b"></div>
+        <div id="result5b"></div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
