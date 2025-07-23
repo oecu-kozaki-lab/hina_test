@@ -3,11 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Wikidata SPARQL 5段階処理 + ある・なし比較</title>
-    <link rel="stylesheet" href="style.css" />
+    <title>Wikidata SPARQL 6段階処理 + 問題生成</title>
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <h1>Wikidata SPARQL 5段階処理 + ある・なし比較</h1>
+    <h1>Wikidata SPARQL 6段階処理 + 問題生成</h1>
 
     <div class="controls">
       <label for="classID">クラスID (例: Q11424 = 映画):</label>
@@ -31,6 +31,7 @@
         <option value="">値を選択...</option>
       </select>
       <button onclick="stage5()">第5段階実行</button>
+      <button onclick="stage6()">第6段階：問題生成</button>
     </div>
 
     <div class="example">
@@ -70,6 +71,11 @@
         <div id="result5a"></div>
         <div class="query-box" id="query5b"></div>
         <div id="result5b"></div>
+      </div>
+
+      <div class="stage" id="stage6">
+        <h3>第6段階: 問題生成</h3>
+        <div id="result6"></div>
       </div>
     </div>
 
