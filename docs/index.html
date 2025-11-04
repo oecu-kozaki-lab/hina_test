@@ -1,4 +1,4 @@
-           <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
@@ -273,28 +273,59 @@
 
         // ファイルを読み込む関数
         async function loadFile(filename) {
-            const response = await fetch(filename);
-            if (!response.ok) {
-                throw new Error(`${filename} が見つかりません`);
+            try {
+                const response = await fetch(filename);
+                if (!response.ok) {
+                    throw new Error(`${filename} が見つかりません (Status: ${response.status})`);
+                }
+                const text = await response.text();
+                console.log(`${filename} 読み込み成功: ${text.length}文字`);
+                return text;
+            } catch (error) {
+                console.error(`${filename} 読み込みエラー:`, error);
+                throw error;
             }
-            return await response.text();
         }
 
         // 全ファイルを読み込み
         async function loadAllFiles() {
             const files = ['自然.txt', '色.txt', '身体.txt', '動物.txt'];
+            let loadedCount = 0;
             
             try {
+                console.log('ファイル読み込み開始...');
+                
                 for (const file of files) {
-                    const content = await loadFile(file);
-                    const lines = content.split('\n').filter(line => line.trim() && !line.startsWith('漢字'));
-                    
-                    lines.forEach(line => {
-                        const [kanji, reading] = line.split(',');
-                        if (kanji && reading) {
-                            allData.push({ kanji: kanji.trim(), reading: reading.trim() });
-                        }
-                    });
+                    try {
+                        const content = await loadFile(file);
+                        const lines = content.split('\n').filter(line => {
+                            const trimmed = line.trim();
+                            return trimmed && !trimmed.startsWith('漢字');
+                        });
+                        
+                        console.log(`${file}: ${lines.length}行のデータ`);
+                        
+                        lines.forEach(line => {
+                            const parts = line.split(',');
+                            if (parts.length >= 2) {
+                                const kanji = parts[0].trim();
+                                const reading = parts[1].trim();
+                                if (kanji && reading) {
+                                    allData.push({ kanji, reading });
+                                }
+                            }
+                        });
+                        
+                        loadedCount++;
+                    } catch (fileError) {
+                        console.warn(`${file} をスキップ:`, fileError.message);
+                    }
+                }
+
+                console.log(`合計 ${allData.length} 件のデータを読み込みました`);
+
+                if (allData.length === 0) {
+                    throw new Error('データが読み込めませんでした');
                 }
 
                 // 読み込み成功
@@ -306,16 +337,23 @@
                 classify();
             } catch (error) {
                 // エラー表示
+                console.error('読み込みエラー:', error);
                 document.getElementById('loading').classList.add('hidden');
                 const errorDiv = document.getElementById('error');
                 errorDiv.classList.remove('hidden');
                 errorDiv.innerHTML = `
                     <h3>⚠️ ファイルの読み込みに失敗しました</h3>
-                    <p>${error.message}</p>
-                    <p style="margin-top: 10px;">
-                        <strong>解決方法:</strong><br>
-                        1. 自然.txt、色.txt、身体.txt、動物.txt をHTMLファイルと同じフォルダに配置してください<br>
-                        2. ローカルサーバーを使用してください（例: Live Server、Python -m http.server など）
+                    <p>エラー: ${error.message}</p>
+                    <p style="margin-top: 15px;"><strong>確認事項:</strong></p>
+                    <ol style="margin-left: 20px; margin-top: 10px;">
+                        <li>自然.txt、色.txt、身体.txt、動物.txt が index.html と同じフォルダにあるか</li>
+                        <li>ファイル名が正確か（全角・半角、大文字・小文字）</li>
+                        <li>ファイルがUTF-8で保存されているか</li>
+                        <li>GitHub Pagesの場合、デプロイが完了しているか（数分かかる場合があります）</li>
+                    </ol>
+                    <p style="margin-top: 15px;"><strong>ブラウザのコンソール（F12キー）を開いて詳細を確認してください</strong></p>
+                    <p style="margin-top: 10px; font-size: 0.9em; color: #666;">
+                        読み込めたファイル数: ${loadedCount}/4
                     </p>
                 `;
             }
