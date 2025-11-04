@@ -1,168 +1,315 @@
-import React, { useState, useEffect } from 'react';
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>漢字読み分類プログラム</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to bottom right, #e8f5e9, #e3f2fd);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+        .criteria-box {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .criteria-box h2 {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            color: #555;
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        .btn.active {
+            background: #2196F3;
+            color: white;
+        }
+        .btn:not(.active) {
+            background: #e0e0e0;
+            color: #666;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .stat-card.green {
+            background: #e8f5e9;
+        }
+        .stat-card.blue {
+            background: #e3f2fd;
+        }
+        .stat-label {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #333;
+        }
+        .results {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        .result-box {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .result-header {
+            padding: 15px;
+            color: white;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        .result-header.green {
+            background: #4CAF50;
+        }
+        .result-header.blue {
+            background: #2196F3;
+        }
+        .result-content {
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 15px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th {
+            background: #f5f5f5;
+            padding: 10px;
+            text-align: left;
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+        }
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        tr:hover {
+            background: #f9f9f9;
+        }
+        @media (max-width: 768px) {
+            .stats {
+                grid-template-columns: 1fr;
+            }
+            .results {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>漢字読み分類プログラム</h1>
 
-const KanjiClassifier = () => {
-  const [allData, setAllData] = useState([]);
-  const [groupA, setGroupA] = useState([]);
-  const [groupB, setGroupB] = useState([]);
-  const [criteria, setCriteria] = useState('nature');
-
-  // 分類基準のキーワード
-  const keywords = {
-    nature: ['やま', 'さん', 'かわ', 'せん', 'き', 'もく', 'はな', 'か', 'みず', 'すい', 'いわ', 'たに', 'うみ', 'かい'],
-    color: ['しろ', 'はく', 'あか', 'しゅ', 'あお', 'せい', 'き', 'くろ', 'こく', 'みどり', 'りょく', 'いろ'],
-    animal: ['いぬ', 'けん', 'ねこ', 'とら', 'うま', 'うし', 'さる', 'とり', 'むし', 'さかな', 'ぎょ'],
-    body: ['て', 'しゅ', 'あし', 'そく', 'め', 'もく', 'みみ', 'じ', 'はな', 'び', 'くち', 'こう', 'あたま', 'とう']
-  };
-
-  useEffect(() => {
-    loadFiles();
-  }, []);
-
-  useEffect(() => {
-    classify();
-  }, [criteria, allData]);
-
-  const loadFiles = async () => {
-    const files = ['自然.txt', '色.txt', '身体.txt', '動物.txt'];
-    const data = [];
-
-    for (const file of files) {
-      try {
-        const content = await window.fs.readFile(file, { encoding: 'utf8' });
-        const lines = content.split('\n').filter(line => line.trim() && !line.startsWith('漢字'));
-        
-        lines.forEach(line => {
-          const [kanji, reading] = line.split(',');
-          if (kanji && reading) {
-            data.push({ kanji: kanji.trim(), reading: reading.trim() });
-          }
-        });
-      } catch (error) {
-        console.error(`${file}読み込みエラー:`, error);
-      }
-    }
-    setAllData(data);
-  };
-
-  const classify = () => {
-    const a = [];
-    const b = [];
-    const currentKeywords = keywords[criteria];
-
-    allData.forEach(item => {
-      const hasKeyword = currentKeywords.some(kw => item.reading.includes(kw));
-      if (hasKeyword) {
-        a.push(item);
-      } else {
-        b.push(item);
-      }
-    });
-
-    setGroupA(a);
-    setGroupB(b);
-  };
-
-  const criteriaNames = {
-    nature: '自然要素',
-    color: '色',
-    animal: '動物',
-    body: '体の部位'
-  };
-
-  return (
-    <div className="p-8 bg-gray-50 min-h-screen">
-      <h1 className="text-3xl font-bold text-center mb-8">漢字読み分類プログラム</h1>
-
-      {/* 分類基準選択 */}
-      <div className="bg-white rounded-lg shadow p-6 mb-6 max-w-4xl mx-auto">
-        <h2 className="font-bold mb-4">分類基準を選択:</h2>
-        <div className="flex gap-4">
-          {Object.keys(keywords).map(key => (
-            <button
-              key={key}
-              onClick={() => setCriteria(key)}
-              className={`px-6 py-3 rounded font-semibold ${
-                criteria === key
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-              }`}
-            >
-              {criteriaNames[key]}
-            </button>
-          ))}
+        <!-- 分類基準選択 -->
+        <div class="criteria-box">
+            <h2>分類基準を選択:</h2>
+            <div class="btn-group">
+                <button class="btn active" onclick="changeCriteria('nature')">自然要素</button>
+                <button class="btn" onclick="changeCriteria('color')">色</button>
+                <button class="btn" onclick="changeCriteria('animal')">動物</button>
+                <button class="btn" onclick="changeCriteria('body')">体の部位</button>
+            </div>
         </div>
-      </div>
 
-      {/* 統計 */}
-      <div className="max-w-4xl mx-auto mb-6 grid grid-cols-3 gap-4">
-        <div className="bg-white rounded-lg shadow p-4 text-center">
-          <p className="text-gray-600 text-sm">総データ数</p>
-          <p className="text-3xl font-bold">{allData.length}</p>
-        </div>
-        <div className="bg-green-50 rounded-lg shadow p-4 text-center">
-          <p className="text-green-700 text-sm font-semibold">A群（含む）</p>
-          <p className="text-3xl font-bold text-green-600">{groupA.length}</p>
-        </div>
-        <div className="bg-blue-50 rounded-lg shadow p-4 text-center">
-          <p className="text-blue-700 text-sm font-semibold">B群（含まない）</p>
-          <p className="text-3xl font-bold text-blue-600">{groupB.length}</p>
-        </div>
-      </div>
-
-      {/* 分類結果 */}
-      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* A群 */}
-        <div className="bg-white rounded-lg shadow">
-          <div className="bg-green-500 text-white p-4 rounded-t-lg">
-            <h3 className="text-xl font-bold">A群: {criteriaNames[criteria]}を含む</h3>
-          </div>
-          <div className="p-4 max-h-96 overflow-y-auto">
-            <table className="w-full">
-              <thead className="bg-gray-100">
-                <tr>
-                  <th className="p-2 text-left">漢字</th>
-                  <th className="p-2 text-left">読み</th>
-                </tr>
-              </thead>
-              <tbody>
-                {groupA.map((item, i) => (
-                  <tr key={i} className="border-b hover:bg-green-50">
-                    <td className="p-2 font-medium">{item.kanji}</td>
-                    <td className="p-2 text-gray-600">{item.reading}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+        <!-- 統計 -->
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-label">総データ数</div>
+                <div class="stat-number" id="total">0</div>
+            </div>
+            <div class="stat-card green">
+                <div class="stat-label">A群（含む）</div>
+                <div class="stat-number" id="groupA">0</div>
+            </div>
+            <div class="stat-card blue">
+                <div class="stat-label">B群（含まない）</div>
+                <div class="stat-number" id="groupB">0</div>
+            </div>
         </div>
 
-        {/* B群 */}
-        <div className="bg-white rounded-lg shadow">
-          <div className="bg-blue-500 text-white p-4 rounded-t-lg">
-            <h3 className="text-xl font-bold">B群: {criteriaNames[criteria]}を含まない</h3>
-          </div>
-          <div className="p-4 max-h-96 overflow-y-auto">
-            <table className="w-full">
-              <thead className="bg-gray-100">
-                <tr>
-                  <th className="p-2 text-left">漢字</th>
-                  <th className="p-2 text-left">読み</th>
-                </tr>
-              </thead>
-              <tbody>
-                {groupB.map((item, i) => (
-                  <tr key={i} className="border-b hover:bg-blue-50">
-                    <td className="p-2 font-medium">{item.kanji}</td>
-                    <td className="p-2 text-gray-600">{item.reading}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+        <!-- 分類結果 -->
+        <div class="results">
+            <div class="result-box">
+                <div class="result-header green">A群: <span id="criteriaNameA">自然要素</span>を含む</div>
+                <div class="result-content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>漢字</th>
+                                <th>読み</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableA"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="result-box">
+                <div class="result-header blue">B群: <span id="criteriaNameB">自然要素</span>を含まない</div>
+                <div class="result-content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>漢字</th>
+                                <th>読み</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableB"></tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  );
-};
 
-export default KanjiClassifier;
+    <script>
+        let allData = [];
+        let currentCriteria = 'nature';
+
+        const keywords = {
+            nature: ['やま', 'さん', 'かわ', 'せん', 'き', 'もく', 'はな', 'か', 'みず', 'すい', 'いわ', 'たに', 'うみ', 'かい', 'ぬま', 'いずみ', 'たき', 'しま', 'みさき', 'さき', 'おか', 'の', 'や'],
+            color: ['しろ', 'はく', 'あか', 'しゅ', 'こう', 'あお', 'せい', 'き', 'くろ', 'こく', 'みどり', 'りょく', 'ちゃ', 'むらさき', 'し', 'きん', 'ぎん', 'いろ'],
+            animal: ['いぬ', 'けん', 'ねこ', 'びょう', 'とら', 'こ', 'うま', 'ば', 'うし', 'ぎゅう', 'さる', 'えん', 'とり', 'ちょう', 'むし', 'ちゅう', 'さかな', 'ぎょ', 'へび', 'じゃ', 'かに', 'えび'],
+            body: ['て', 'しゅ', 'あし', 'そく', 'し', 'め', 'もく', 'がん', 'みみ', 'じ', 'はな', 'び', 'くち', 'こう', 'は', 'した', 'ぜつ', 'あたま', 'とう', 'ず', 'かお', 'くび', 'けい', 'かた', 'うで', 'ゆび', 'むね', 'はら']
+        };
+
+        const criteriaNames = {
+            nature: '自然要素',
+            color: '色',
+            animal: '動物',
+            body: '体の部位'
+        };
+
+        async function loadFiles() {
+            const files = ['自然.txt', '色.txt', '身体.txt', '動物.txt'];
+            
+            for (const file of files) {
+                try {
+                    const content = await window.fs.readFile(file, { encoding: 'utf8' });
+                    const lines = content.split('\n').filter(line => line.trim() && !line.startsWith('漢字'));
+                    
+                    lines.forEach(line => {
+                        const [kanji, reading] = line.split(',');
+                        if (kanji && reading) {
+                            allData.push({ kanji: kanji.trim(), reading: reading.trim() });
+                        }
+                    });
+                } catch (error) {
+                    console.error(`${file}読み込みエラー:`, error);
+                }
+            }
+            
+            classify();
+        }
+
+        function classify() {
+            const groupAData = [];
+            const groupBData = [];
+            const currentKeywords = keywords[currentCriteria];
+
+            allData.forEach(item => {
+                const hasKeyword = currentKeywords.some(kw => item.reading.includes(kw));
+                if (hasKeyword) {
+                    groupAData.push(item);
+                } else {
+                    groupBData.push(item);
+                }
+            });
+
+            // 統計更新
+            document.getElementById('total').textContent = allData.length;
+            document.getElementById('groupA').textContent = groupAData.length;
+            document.getElementById('groupB').textContent = groupBData.length;
+
+            // 基準名更新
+            const criteriaName = criteriaNames[currentCriteria];
+            document.getElementById('criteriaNameA').textContent = criteriaName;
+            document.getElementById('criteriaNameB').textContent = criteriaName;
+
+            // テーブル更新
+            updateTable('tableA', groupAData);
+            updateTable('tableB', groupBData);
+        }
+
+        function updateTable(tableId, data) {
+            const tbody = document.getElementById(tableId);
+            tbody.innerHTML = '';
+            
+            data.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${item.kanji}</strong></td>
+                    <td>${item.reading}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function changeCriteria(criteria) {
+            currentCriteria = criteria;
+            
+            // ボタンのアクティブ状態を更新
+            document.querySelectorAll('.btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            classify();
+        }
+
+        // ページ読み込み時にファイルを読み込む
+        loadFiles();
+    </script>
+</body>
+</html>
