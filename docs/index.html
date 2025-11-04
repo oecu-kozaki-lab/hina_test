@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+           <!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
@@ -25,6 +25,34 @@
             color: #333;
             margin-bottom: 30px;
             font-size: 2em;
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #4CAF50;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .error {
+            background: #ffebee;
+            color: #c62828;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #c62828;
         }
         .criteria-box {
             background: white;
@@ -139,6 +167,9 @@
         tr:hover {
             background: #f9f9f9;
         }
+        .hidden {
+            display: none;
+        }
         @media (max-width: 768px) {
             .stats {
                 grid-template-columns: 1fr;
@@ -153,8 +184,17 @@
     <div class="container">
         <h1>漢字読み分類プログラム</h1>
 
+        <!-- ローディング表示 -->
+        <div id="loading" class="loading">
+            <div class="loading-spinner"></div>
+            <p>データを読み込んでいます...</p>
+        </div>
+
+        <!-- エラー表示 -->
+        <div id="error" class="error hidden"></div>
+
         <!-- 分類基準選択 -->
-        <div class="criteria-box">
+        <div id="criteriaBox" class="criteria-box hidden">
             <h2>分類基準を選択:</h2>
             <div class="btn-group">
                 <button class="btn active" onclick="changeCriteria('nature')">自然要素</button>
@@ -165,7 +205,7 @@
         </div>
 
         <!-- 統計 -->
-        <div class="stats">
+        <div id="stats" class="stats hidden">
             <div class="stat-card">
                 <div class="stat-label">総データ数</div>
                 <div class="stat-number" id="total">0</div>
@@ -181,7 +221,7 @@
         </div>
 
         <!-- 分類結果 -->
-        <div class="results">
+        <div id="results" class="results hidden">
             <div class="result-box">
                 <div class="result-header green">A群: <span id="criteriaNameA">自然要素</span>を含む</div>
                 <div class="result-content">
@@ -231,12 +271,22 @@
             body: '体の部位'
         };
 
-        async function loadFiles() {
+        // ファイルを読み込む関数
+        async function loadFile(filename) {
+            const response = await fetch(filename);
+            if (!response.ok) {
+                throw new Error(`${filename} が見つかりません`);
+            }
+            return await response.text();
+        }
+
+        // 全ファイルを読み込み
+        async function loadAllFiles() {
             const files = ['自然.txt', '色.txt', '身体.txt', '動物.txt'];
             
-            for (const file of files) {
-                try {
-                    const content = await window.fs.readFile(file, { encoding: 'utf8' });
+            try {
+                for (const file of files) {
+                    const content = await loadFile(file);
                     const lines = content.split('\n').filter(line => line.trim() && !line.startsWith('漢字'));
                     
                     lines.forEach(line => {
@@ -245,12 +295,30 @@
                             allData.push({ kanji: kanji.trim(), reading: reading.trim() });
                         }
                     });
-                } catch (error) {
-                    console.error(`${file}読み込みエラー:`, error);
                 }
+
+                // 読み込み成功
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('criteriaBox').classList.remove('hidden');
+                document.getElementById('stats').classList.remove('hidden');
+                document.getElementById('results').classList.remove('hidden');
+                
+                classify();
+            } catch (error) {
+                // エラー表示
+                document.getElementById('loading').classList.add('hidden');
+                const errorDiv = document.getElementById('error');
+                errorDiv.classList.remove('hidden');
+                errorDiv.innerHTML = `
+                    <h3>⚠️ ファイルの読み込みに失敗しました</h3>
+                    <p>${error.message}</p>
+                    <p style="margin-top: 10px;">
+                        <strong>解決方法:</strong><br>
+                        1. 自然.txt、色.txt、身体.txt、動物.txt をHTMLファイルと同じフォルダに配置してください<br>
+                        2. ローカルサーバーを使用してください（例: Live Server、Python -m http.server など）
+                    </p>
+                `;
             }
-            
-            classify();
         }
 
         function classify() {
@@ -308,8 +376,10 @@
             classify();
         }
 
-        // ページ読み込み時にファイルを読み込む
-        loadFiles();
+        // ページ読み込み時に実行
+        window.onload = function() {
+            loadAllFiles();
+        };
     </script>
 </body>
 </html>
