@@ -258,12 +258,11 @@
         let currentCriteria = 'nature';
 
         const keywords = {
-            nature: ['うれつ','がん','さん','ざん','こく','すい','めさ','わじ','かれかわ','かれたに','かれだに','きゅうりょう','なみき','はんとう','えんしょう','たいりく','きがん','やま','いわ','いわお','おおいわ','みさき','さき','きょうこく','ひがた','すいげん','ぬま','ぬまち','いずみ','どろぬま','かいざん','かいよう','たいよう','たいかい','おんせん','てんねんおんせん','しつげん','しっち','たき','たきつぼ','かこう','かざん','たに','けいこく','よこたに','かこく','やと','やち','のゆ','こうしょう','こうせん','こうみゃく','せつでん','れいほう','れいざん','こうげん'],
-            color: ['あけぼの','ももはな','こうしょく','ぐれい','むしょく','りょく','はく','しゅ','もも','さくら','みず','しんく','のうし','しこん','はい','しろ','そら','むらさき','こん','みどり','ねり','くさ','すみれ','もえぎ','あいじろ','あい','あか','きん','こがね','ぎん','しろがね','どう','あお','あおみどり','きみどり','きいろ','くろ'],
-            animal: ['あぶ','いぬ','いえいぬ','うし','えび','かき','かに','かも','きじ','くま','くも','さば','さる','しか','ぞう','たこ','だに','つぶ','つる','ねこ','いえねこ','はえ','はち','ふぐ','へび','やご','ろば','こうし','にしきごい','おうし','めうし','さかな','こい','たい','とり','ことり','はと','かもめ','わし','たか','さぎ','ねずみ'],
-            body: ['へそ','ほぞ','おへそ','にのうで','なかゆび','おっぱい','ちぶさ','ちくび','きとう','えいん','くちびる','つば','よだれ','しり','おしり','けつ','て','てくび','ゆび','はぐき','け','すねげ','うぶげ','はだ','まゆげ','まゆ','みけん','め','まぶた','つめ','きば','はぐき','はな','みみ','みみあか','みみくそ','ひじ','かた','はい','いぶくろ','せなか','あし','うで','ひざ','へそのお','した','くすりゆび','おやゆび','つの','つまさき','くるぶし','ほお','ほっぺ','ほほ','あたま','かお','くび','こつ','ひげ','あごひげ','ほおひげ','はなすじ']
+            nature: ['やま', 'さん', 'かわ', 'せん', 'き', 'もく', 'はな', 'か', 'みず', 'すい', 'いわ', 'たに', 'うみ', 'かい', 'ぬま', 'いずみ', 'たき', 'しま', 'みさき', 'さき', 'おか', 'の', 'や'],
+            color: ['しろ', 'はく', 'あか', 'しゅ', 'こう', 'あお', 'せい', 'き', 'くろ', 'こく', 'みどり', 'りょく', 'ちゃ', 'むらさき', 'し', 'きん', 'ぎん', 'いろ'],
+            animal: ['いぬ', 'けん', 'ねこ', 'びょう', 'とら', 'こ', 'うま', 'ば', 'うし', 'ぎゅう', 'さる', 'えん', 'とり', 'ちょう', 'むし', 'ちゅう', 'さかな', 'ぎょ', 'へび', 'じゃ', 'かに', 'えび'],
+            body: ['て', 'しゅ', 'あし', 'そく', 'し', 'め', 'もく', 'がん', 'みみ', 'じ', 'はな', 'び', 'くち', 'こう', 'は', 'した', 'ぜつ', 'あたま', 'とう', 'ず', 'かお', 'くび', 'けい', 'かた', 'うで', 'ゆび', 'むね', 'はら']
         };
-
 
         const criteriaNames = {
             nature: '自然要素',
@@ -291,42 +290,18 @@
         // 全ファイルを読み込み
         async function loadAllFiles() {
             const files = ['自然.txt', '色.txt', '身体.txt', '動物.txt'];
-            let loadedCount = 0;
             
             try {
-                console.log('ファイル読み込み開始...');
-                
                 for (const file of files) {
-                    try {
-                        const content = await loadFile(file);
-                        const lines = content.split('\n').filter(line => {
-                            const trimmed = line.trim();
-                            return trimmed && !trimmed.startsWith('漢字');
-                        });
-                        
-                        console.log(`${file}: ${lines.length}行のデータ`);
-                        
-                        lines.forEach(line => {
-                            const parts = line.split(',');
-                            if (parts.length >= 2) {
-                                const kanji = parts[0].trim();
-                                const reading = parts[1].trim();
-                                if (kanji && reading) {
-                                    allData.push({ kanji, reading });
-                                }
-                            }
-                        });
-                        
-                        loadedCount++;
-                    } catch (fileError) {
-                        console.warn(`${file} をスキップ:`, fileError.message);
-                    }
-                }
-
-                console.log(`合計 ${allData.length} 件のデータを読み込みました`);
-
-                if (allData.length === 0) {
-                    throw new Error('データが読み込めませんでした');
+                    const content = await loadFile(file);
+                    const lines = content.split('\n').filter(line => line.trim() && !line.startsWith('漢字'));
+                    
+                    lines.forEach(line => {
+                        const [kanji, reading] = line.split(',');
+                        if (kanji && reading) {
+                            allData.push({ kanji: kanji.trim(), reading: reading.trim() });
+                        }
+                    });
                 }
 
                 // 読み込み成功
@@ -338,23 +313,16 @@
                 classify();
             } catch (error) {
                 // エラー表示
-                console.error('読み込みエラー:', error);
                 document.getElementById('loading').classList.add('hidden');
                 const errorDiv = document.getElementById('error');
                 errorDiv.classList.remove('hidden');
                 errorDiv.innerHTML = `
                     <h3>⚠️ ファイルの読み込みに失敗しました</h3>
-                    <p>エラー: ${error.message}</p>
-                    <p style="margin-top: 15px;"><strong>確認事項:</strong></p>
-                    <ol style="margin-left: 20px; margin-top: 10px;">
-                        <li>自然.txt、色.txt、身体.txt、動物.txt が index.html と同じフォルダにあるか</li>
-                        <li>ファイル名が正確か（全角・半角、大文字・小文字）</li>
-                        <li>ファイルがUTF-8で保存されているか</li>
-                        <li>GitHub Pagesの場合、デプロイが完了しているか（数分かかる場合があります）</li>
-                    </ol>
-                    <p style="margin-top: 15px;"><strong>ブラウザのコンソール（F12キー）を開いて詳細を確認してください</strong></p>
-                    <p style="margin-top: 10px; font-size: 0.9em; color: #666;">
-                        読み込めたファイル数: ${loadedCount}/4
+                    <p>${error.message}</p>
+                    <p style="margin-top: 10px;">
+                        <strong>解決方法:</strong><br>
+                        1. 自然.txt、色.txt、身体.txt、動物.txt をHTMLファイルと同じフォルダに配置してください<br>
+                        2. ローカルサーバーを使用してください（例: Live Server、Python -m http.server など）
                     </p>
                 `;
             }
