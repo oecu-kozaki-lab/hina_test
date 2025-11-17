@@ -259,16 +259,7 @@
         <!-- エラー表示 -->
         <div id="error" class="error hidden"></div>
 
-        <!-- 分類基準選択 -->
-        <div id="criteriaBox" class="criteria-box hidden">
-            <h2>分類基準を選択:</h2>
-            <div class="btn-group">
-                <button class="btn active" onclick="changeCriteria('nature')">自然要素</button>
-                <button class="btn" onclick="changeCriteria('color')">色</button>
-                <button class="btn" onclick="changeCriteria('animal')">動物</button>
-                <button class="btn" onclick="changeCriteria('body')">体の部位</button>
-            </div>
-        </div>
+
 
         <!-- グループ表示 -->
         <div id="groupsDisplay" class="groups-display hidden">
@@ -303,7 +294,7 @@
 
     <script>
         let allData = [];
-        let currentCriteria = 'nature';
+        let currentCriteria = null;
         let groupAData = [];
         let groupBData = [];
         let currentQuestion = null;
@@ -354,9 +345,7 @@
                 }
 
                 document.getElementById('loading').classList.add('hidden');
-                document.getElementById('criteriaBox').classList.remove('hidden');
                 
-                classifyData();
                 generateQuestion();
             } catch (error) {
                 document.getElementById('loading').classList.add('hidden');
@@ -395,6 +384,13 @@
         }
 
         function generateQuestion() {
+            // ランダムに分類基準を選択
+            const criteriaKeys = ['nature', 'color', 'animal', 'body'];
+            currentCriteria = criteriaKeys[Math.floor(Math.random() * criteriaKeys.length)];
+            
+            // データを分類
+            classifyData();
+            
             // グループAから4つ、グループBから4つ選択
             displayedGroupA = getRandomItems(groupAData, 4);
             displayedGroupB = getRandomItems(groupBData, 4);
@@ -477,18 +473,6 @@
         }
 
         function nextQuestion() {
-            generateQuestion();
-        }
-
-        function changeCriteria(criteria) {
-            currentCriteria = criteria;
-            
-            document.querySelectorAll('.btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
-            
-            classifyData();
             generateQuestion();
         }
 
