@@ -354,18 +354,31 @@
             // データを分類
             classifyData();
             
-            // グループAから4つ、グループBから4つ選択
-            displayedGroupA = getRandomItems(groupAData, 4);
-            displayedGroupB = getRandomItems(groupBData, 4);
-
-            // 問題用の漢字をAまたはBからランダムに選択
+            // まず問題用の漢字をAまたはBからランダムに選択
             const useGroupA = Math.random() < 0.5;
+            
             if (useGroupA) {
-                currentQuestion = displayedGroupA[Math.floor(Math.random() * displayedGroupA.length)];
+                currentQuestion = groupAData[Math.floor(Math.random() * groupAData.length)];
                 currentQuestion.correctGroup = 'A';
+                
+                // グループAから問題を除く4つを選択
+                displayedGroupA = getRandomItems(
+                    groupAData.filter(item => item.kanji !== currentQuestion.kanji),
+                    4
+                );
+                // グループBから4つ選択
+                displayedGroupB = getRandomItems(groupBData, 4);
             } else {
-                currentQuestion = displayedGroupB[Math.floor(Math.random() * displayedGroupB.length)];
+                currentQuestion = groupBData[Math.floor(Math.random() * groupBData.length)];
                 currentQuestion.correctGroup = 'B';
+                
+                // グループAから4つ選択
+                displayedGroupA = getRandomItems(groupAData, 4);
+                // グループBから問題を除く4つを選択
+                displayedGroupB = getRandomItems(
+                    groupBData.filter(item => item.kanji !== currentQuestion.kanji),
+                    4
+                );
             }
 
             displayGroups();
