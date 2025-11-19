@@ -81,18 +81,24 @@
         }
         .group-content {
             padding: 20px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-            min-height: 120px;
+            min-height: 180px;
         }
         .kanji-item {
-            font-size: 1.8em;
-            font-weight: bold;
-            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            margin-bottom: 10px;
             background: #f5f5f5;
             border-radius: 8px;
+        }
+        .kanji-item-left {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        .kanji-item-right {
+            font-size: 1.1em;
+            color: #666;
         }
         .question-box {
             background: white;
@@ -173,10 +179,25 @@
             font-size: 1.1em;
             color: #555;
             margin: 20px 0;
-            padding: 20px;
+            padding: 25px;
             background: #f5f5f5;
             border-radius: 8px;
             text-align: left;
+            line-height: 1.8;
+        }
+        .explanation ul {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+        .explanation li {
+            margin: 8px 0;
+        }
+        .explanation strong {
+            color: #2196F3;
+        }
+        .explanation .highlight {
+            color: #FF5722;
+            font-weight: bold;
         }
         .next-btn {
             padding: 15px 40px;
@@ -221,8 +242,6 @@
 
         <!-- エラー表示 -->
         <div id="error" class="error hidden"></div>
-
-
 
         <!-- グループ表示 -->
         <div id="groupsDisplay" class="groups-display hidden">
@@ -390,11 +409,17 @@
             const groupBDiv = document.getElementById('groupBDisplay');
 
             groupADiv.innerHTML = displayedGroupA.map(item => 
-                `<div class="kanji-item">${item.kanji}</div>`
+                `<div class="kanji-item">
+                    <span class="kanji-item-left">${item.kanji}</span>
+                    <span class="kanji-item-right">${item.reading}</span>
+                </div>`
             ).join('');
 
             groupBDiv.innerHTML = displayedGroupB.map(item => 
-                `<div class="kanji-item">${item.kanji}</div>`
+                `<div class="kanji-item">
+                    <span class="kanji-item-left">${item.kanji}</span>
+                    <span class="kanji-item-right">${item.reading}</span>
+                </div>`
             ).join('');
 
             document.getElementById('groupsDisplay').classList.remove('hidden');
@@ -433,13 +458,26 @@
             const currentKeywords = keywords[currentCriteria];
             const matchedKeywords = currentKeywords.filter(kw => currentQuestion.reading.includes(kw));
             
-            let explanationText = `<strong>漢字：</strong>${currentQuestion.kanji}<br>`;
-            explanationText += `<strong>読み：</strong>${currentQuestion.reading}<br><br>`;
+            let explanationText = `<strong>問われている単語：</strong><span class="highlight">「${currentQuestion.kanji}」</span>は、<span class="highlight">「${currentQuestion.reading}」</span>と読みます。<br><br>`;
             
+            // グループAの分析
+            explanationText += `<strong>グループAをよく見ると</strong>読み方の中に<strong>${criteriaName}</strong>が含まれています。<ul>`;
+            displayedGroupA.forEach(item => {
+                const matched = currentKeywords.filter(kw => item.reading.includes(kw));
+                if (matched.length > 0) {
+                    explanationText += `<li><strong>${item.reading}</strong>（${matched.join('、')}）</li>`;
+                }
+            });
+            explanationText += `</ul>`;
+            
+            // グループBの分析
+            explanationText += `<strong>一方で、グループBには</strong>読み方の中に<strong>${criteriaName}</strong>が含まれていません。<br><br>`;
+            
+            // 結論
             if (currentQuestion.correctGroup === 'A') {
-                explanationText += `この読みには「${matchedKeywords.join('、')}」という${criteriaName}が含まれているため、<strong>グループA</strong>に分類されます。`;
+                explanationText += `<strong>問われている単語「${currentQuestion.kanji}」は、「${currentQuestion.reading}」と読み、「${matchedKeywords.join('、')}」という${criteriaName}を含むため、<span class="highlight">「グループA」</span>が正解になります。</strong>`;
             } else {
-                explanationText += `この読みには${criteriaName}が含まれていないため、<strong>グループB</strong>に分類されます。`;
+                explanationText += `<strong>問われている単語「${currentQuestion.kanji}」は、「${currentQuestion.reading}」と読み、${criteriaName}を含まないため、<span class="highlight">「グループB」</span>が正解になります。</strong>`;
             }
 
             explanation.innerHTML = explanationText;
