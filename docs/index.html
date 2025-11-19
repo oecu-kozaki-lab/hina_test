@@ -84,21 +84,15 @@
             min-height: 180px;
         }
         .kanji-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
             padding: 12px 15px;
             margin-bottom: 10px;
             background: #f5f5f5;
             border-radius: 8px;
+            text-align: center;
         }
         .kanji-item-left {
             font-size: 1.5em;
             font-weight: bold;
-        }
-        .kanji-item-right {
-            font-size: 1.1em;
-            color: #666;
         }
         .question-box {
             background: white;
@@ -411,14 +405,12 @@
             groupADiv.innerHTML = displayedGroupA.map(item => 
                 `<div class="kanji-item">
                     <span class="kanji-item-left">${item.kanji}</span>
-                    <span class="kanji-item-right">${item.reading}</span>
                 </div>`
             ).join('');
 
             groupBDiv.innerHTML = displayedGroupB.map(item => 
                 `<div class="kanji-item">
                     <span class="kanji-item-left">${item.kanji}</span>
-                    <span class="kanji-item-right">${item.reading}</span>
                 </div>`
             ).join('');
 
