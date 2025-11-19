@@ -456,11 +456,11 @@
             explanationText += `<strong>グループAをよく見ると</strong>読み方の中に<strong>${criteriaName}</strong>が含まれています。<ul>`;
             displayedGroupA.forEach(item => {
                 const matched = currentKeywords.filter(kw => item.reading.includes(kw));
+                explanationText += `<li><strong>${item.kanji}</strong>：${item.reading}`;
                 if (matched.length > 0) {
-                    explanationText += `<li><strong>${item.reading}</strong>（${matched.join('、')}）</li>`;
-                } else {
-                    explanationText += `<li><strong>${item.reading}</strong></li>`;
+                    explanationText += `（${matched.join('、')}）`;
                 }
+                explanationText += `</li>`;
             });
             explanationText += `</ul>`;
             
