@@ -458,6 +458,8 @@
                 const matched = currentKeywords.filter(kw => item.reading.includes(kw));
                 if (matched.length > 0) {
                     explanationText += `<li><strong>${item.reading}</strong>（${matched.join('、')}）</li>`;
+                } else {
+                    explanationText += `<li><strong>${item.reading}</strong></li>`;
                 }
             });
             explanationText += `</ul>`;
@@ -488,3 +490,5 @@
     </script>
 </body>
 </html>
+     
+     
