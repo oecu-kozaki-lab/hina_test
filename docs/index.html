@@ -251,7 +251,7 @@
 
         <!-- 問題表示 -->
         <div id="questionBox" class="question-box hidden">
-            <div class="question-text">この漢字はグループAとグループBのどちらでしょうか？</div>
+            <div class="question-text">この漢字はグループAとグループBのどちらでしょうか?</div>
             <div class="question-kanji" id="questionKanji"></div>
             <div class="answer-buttons">
                 <button class="answer-btn green" onclick="checkAnswer('A')">グループA</button>
@@ -278,10 +278,10 @@
         let displayedGroupB = [];
 
         const keywords = {
-            nature: ['うれつ','がん','さん','ざん','こく','すい','めさ','わじ','かれかわ','かれたに','かれだに','きゅうりょう','なみき','はんとう','えんしょう','たいりく','きがん','やま','いわ','いわお','おおいわ','みさき','さき','きょうこく','ひがた','すいげん','ぬま','ぬまち','いずみ','どろぬま','かいざん','かいよう','たいよう','たいかい','おんせん','てんねんおんせん','しつげん','しっち','たき','たきつぼ','かこう','かざん','たに','けいこく','よこたに','かこく','やと','やち','のゆ','こうしょう','こうせん','こうみゃく','せつでん','れいほう','れいざん','こうげん'],
-            color: ['あけぼの','ももはな','こうしょく','ぐれい','むしょく','りょく','はく','しゅ','もも','さくら','みず','しんく','のうし','しこん','はい','しろ','そら','むらさき','こん','みどり','ねり','くさ','すみれ','もえぎ','あいじろ','あい','あか','きん','こがね','ぎん','しろがね','どう','あお','あおみどり','きみどり','きいろ','くろ'],
-            animal: ['あぶ','いぬ','いえいぬ','うし','えび','かき','かに','かも','きじ','くま','くも','さば','さる','しか','ぞう','たこ','だに','つぶ','つる','ねこ','いえねこ','はえ','はち','ふぐ','へび','やご','ろば','こうし','にしきごい','おうし','めうし','さかな','こい','たい','とり','ことり','はと','かもめ','わし','たか','さぎ','ねずみ'],
-            body: ['へそ','ほぞ','おへそ','にのうで','なかゆび','おっぱい','ちぶさ','ちくび','きとう','えいん','くちびる','つば','よだれ','しり','おしり','けつ','て','てくび','ゆび','はぐき','け','すねげ','うぶげ','はだ','まゆげ','まゆ','みけん','め','まぶた','つめ','きば','はぐき','はな','みみ','みみあか','みみくそ','ひじ','かた','はい','いぶくろ','せなか','あし','うで','ひざ','へそのお','した','くすりゆび','おやゆび','つの','つまさき','くるぶし','ほお','ほっぺ','ほほ','あたま','かお','くび','こつ','ひげ','あごひげ','ほおひげ','はなすじ']
+            nature: ['うれつ','がん','さん','ざん','こ','すい','あさ','あじ','かれか','かれたに','かれだに','きゅうりょう','なみだ','はんとう','えんしょう','たいりく','きがん','やま','いし','いしおけ','おおいし','みさき','さき','きょうこく','ひがた','すいけん','ぬま','ぬまち','いずみ','どろぬま','かいざん','かいよう','たいよう','たいかい','おんせん','てんけんおんせん','しつけん','しっち','たけ','たけつぼ','かこう','かざん','たに','けいこく','よこたに','かこく','やと','やち','のゆ','こうしょう','こうせん','こうみゃく','せつでん','れいほう','れいざん','こうけん'],
+            color: ['あけぼの','ももはな','こうしょく','きれい','むしょく','りょく','はく','しゅ','もも','さくら','みず','しんく','のうし','しこん','はい','しろ','くら','むらさき','こん','みどり','ねり','くさ','すみれ','もえぎ','あいじろ','あい','あか','きん','こがね','ぎん','しろがね','どう','あお','あおみどり','きみどり','きいろ','きく'],
+            animal: ['あぶ','いぬ','いえいぬ','うし','えび','かき','かに','かも','きじ','くま','くも','さば','さる','しか','ぞう','たこ','だに','つぶ','つる','ねこ','いえねこ','はえ','はち','ふく','へび','やぎ','あば','こうし','にしきごい','おうし','めうし','さかな','こい','たい','とり','ことり','はと','かもめ','あし','たか','さぎ','ねずみ'],
+            body: ['へそ','ほぞ','おへそ','にのうで','なかゆび','おっぱい','ちぶさ','ちくび','ことう','えいん','くちびる','つば','よだれ','しり','おしり','けつ','て','てくび','ゆび','はく','け','すねげ','うぶげ','はだ','まゆげ','まゆ','みけん','ま','まぶた','つめ','きば','はく','はな','みみ','みみあか','みみくそ','ひじ','かた','はい','いぶくろ','せなか','あし','うで','ひざ','へきのお','した','くすりゆび','おやゆび','つの','つまさき','くるぶし','ほお','ほっぺ','ほほ','あたま','かお','くび','こつ','ひげ','あごひげ','ほおひげ','はなすじ']
         };
 
         const criteriaNames = {
@@ -300,30 +300,6 @@
                 const text = await response.text();
                 return text;
             } catch (error) {
-                throw error;
-            }
-        }
-
-        async function loadAllFiles() {
-            const files = ['自然.txt', '色.txt', '身体.txt', '動物.txt'];
-            
-            try {
-                for (const file of files) {
-                    const content = await loadFile(file);
-                    const lines = content.split('\n').filter(line => line.trim() && !line.startsWith('漢字'));
-                    
-                    lines.forEach(line => {
-                        const [kanji, reading] = line.split(',');
-                        if (kanji && reading) {
-                            allData.push({ kanji: kanji.trim(), reading: reading.trim() });
-                        }
-                    });
-                }
-
-                document.getElementById('loading').classList.add('hidden');
-                
-                generateQuestion();
-            } catch (error) {
                 document.getElementById('loading').classList.add('hidden');
                 const errorDiv = document.getElementById('error');
                 errorDiv.classList.remove('hidden');
@@ -333,7 +309,7 @@
                     <p style="margin-top: 10px;">
                         <strong>解決方法:</strong><br>
                         1. 自然.txt、色.txt、身体.txt、動物.txt をHTMLファイルと同じフォルダに配置してください<br>
-                        2. ローカルサーバーを使用してください（例: Live Server、Python -m http.server など）
+                        2. ローカルサーバーを使用してください(例: Live Server、Python -m http.server など)
                     </p>
                 `;
             }
@@ -354,9 +330,48 @@
             });
         }
 
-        function getRandomItems(array, count) {
-            const shuffled = [...array].sort(() => Math.random() - 0.5);
-            return shuffled.slice(0, count);
+        // 類似度スコアを計算する関数
+        function calculateSimilarity(baseItem, compareItem) {
+            let score = 0;
+            
+            // 読みの共通文字数をカウント
+            const baseChars = baseItem.reading.split('');
+            const compareChars = compareItem.reading.split('');
+            
+            for (const char of baseChars) {
+                if (compareChars.includes(char)) {
+                    score += 2; // 共通文字1つにつき2点
+                }
+            }
+            
+            // 読みの長さの差が小さいほど加点（最大5点）
+            const lengthDiff = Math.abs(baseItem.reading.length - compareItem.reading.length);
+            score += Math.max(0, 5 - lengthDiff);
+            
+            // 読みの先頭文字が同じなら追加で3点
+            if (baseItem.reading[0] === compareItem.reading[0]) {
+                score += 3;
+            }
+            
+            return score;
+        }
+
+        // 類似度順に漢字を取得する関数
+        function getSimilarItems(baseItem, array, count) {
+            // 自分自身を除外
+            const candidates = array.filter(item => item.kanji !== baseItem.kanji);
+            
+            // 各候補に類似度スコアを付与
+            const scored = candidates.map(item => ({
+                ...item,
+                similarity: calculateSimilarity(baseItem, item)
+            }));
+            
+            // 類似度の高い順にソート
+            scored.sort((a, b) => b.similarity - a.similarity);
+            
+            // 上位count件を返す
+            return scored.slice(0, count);
         }
 
         function generateQuestion() {
@@ -374,24 +389,20 @@
                 currentQuestion = groupAData[Math.floor(Math.random() * groupAData.length)];
                 currentQuestion.correctGroup = 'A';
                 
-                // グループAから問題を除く4つを選択
-                displayedGroupA = getRandomItems(
-                    groupAData.filter(item => item.kanji !== currentQuestion.kanji),
-                    4
-                );
-                // グループBから4つ選択
-                displayedGroupB = getRandomItems(groupBData, 4);
+                // グループAから問題と類似度の高い4つを選択
+                displayedGroupA = getSimilarItems(currentQuestion, groupAData, 4);
+                
+                // グループBからも問題と類似度の高い4つを選択（より紛らわしくするため）
+                displayedGroupB = getSimilarItems(currentQuestion, groupBData, 4);
             } else {
                 currentQuestion = groupBData[Math.floor(Math.random() * groupBData.length)];
                 currentQuestion.correctGroup = 'B';
                 
-                // グループAから4つ選択
-                displayedGroupA = getRandomItems(groupAData, 4);
-                // グループBから問題を除く4つを選択
-                displayedGroupB = getRandomItems(
-                    groupBData.filter(item => item.kanji !== currentQuestion.kanji),
-                    4
-                );
+                // グループAから問題と類似度の高い4つを選択
+                displayedGroupA = getSimilarItems(currentQuestion, groupAData, 4);
+                
+                // グループBから問題と類似度の高い4つを選択
+                displayedGroupB = getSimilarItems(currentQuestion, groupBData, 4);
             }
 
             displayGroups();
@@ -438,7 +449,7 @@
                 resultBox.classList.add('correct');
                 resultText.classList.add('correct');
                 resultIcon.textContent = '🎉';
-                resultText.textContent = '正解！';
+                resultText.textContent = '正解!';
             } else {
                 resultBox.classList.add('incorrect');
                 resultText.classList.add('incorrect');
@@ -450,15 +461,15 @@
             const currentKeywords = keywords[currentCriteria];
             const matchedKeywords = currentKeywords.filter(kw => currentQuestion.reading.includes(kw));
             
-            let explanationText = `<strong>問われている単語：</strong><span class="highlight">「${currentQuestion.kanji}」</span>は、<span class="highlight">「${currentQuestion.reading}」</span>と読みます。<br><br>`;
+            let explanationText = `<strong>問われている単語:</strong><span class="highlight">「${currentQuestion.kanji}」</span>は、<span class="highlight">「${currentQuestion.reading}」</span>と読みます。<br><br>`;
             
             // グループAの分析
             explanationText += `<strong>グループAをよく見ると</strong>読み方の中に<strong>${criteriaName}</strong>が含まれています。<ul>`;
             displayedGroupA.forEach(item => {
                 const matched = currentKeywords.filter(kw => item.reading.includes(kw));
-                explanationText += `<li><strong>${item.kanji}</strong>：${item.reading}`;
+                explanationText += `<li><strong>${item.kanji}</strong>:${item.reading}`;
                 if (matched.length > 0) {
-                    explanationText += `（${matched.join('、')}）`;
+                    explanationText += `(${matched.join('、')})`;
                 }
                 explanationText += `</li>`;
             });
@@ -489,6 +500,28 @@
         };
     </script>
 </body>
-</html>
-     
-     
+</html> {
+                throw error;
+            }
+        }
+
+        async function loadAllFiles() {
+            const files = ['自然.txt', '色.txt', '身体.txt', '動物.txt'];
+            
+            try {
+                for (const file of files) {
+                    const content = await loadFile(file);
+                    const lines = content.split('\n').filter(line => line.trim() && !line.startsWith('漢字'));
+                    
+                    lines.forEach(line => {
+                        const [kanji, reading] = line.split(',');
+                        if (kanji && reading) {
+                            allData.push({ kanji: kanji.trim(), reading: reading.trim() });
+                        }
+                    });
+                }
+
+                document.getElementById('loading').classList.add('hidden');
+                
+                generateQuestion();
+            } catch (error)
