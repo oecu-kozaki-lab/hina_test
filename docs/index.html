@@ -359,42 +359,6 @@
             return shuffled.slice(0, count);
         }
 
-        // 類似度スコアを計算する関数
-        function calculateSimilarity(questionItem, candidateItem) {
-            let score = 0;
-            
-            // 読みの共通文字数をカウント
-            for (const char of questionItem.reading) {
-                if (candidateItem.reading.includes(char)) {
-                    score++;
-                }
-            }
-            
-            // 読みの長さの差が小さいほど加点
-            const lengthDiff = Math.abs(questionItem.reading.length - candidateItem.reading.length);
-            score += Math.max(0, 5 - lengthDiff);
-            
-            return score;
-        }
-
-        // 類似度順でアイテムを選択する関数
-        function getSimilarItems(questionItem, candidateArray, count) {
-            // 類似度スコアを計算して配列に追加
-            const itemsWithScore = candidateArray.map(item => ({
-                ...item,
-                similarityScore: calculateSimilarity(questionItem, item)
-            }));
-            
-            // スコアの降順でソート
-            itemsWithScore.sort((a, b) => b.similarityScore - a.similarityScore);
-            
-            // 上位count件を返す（スコア情報は除去）
-            return itemsWithScore.slice(0, count).map(item => {
-                const { similarityScore, ...itemWithoutScore } = item;
-                return itemWithoutScore;
-            });
-        }
-
         function generateQuestion() {
             // ランダムに分類基準を選択
             const criteriaKeys = ['nature', 'color', 'animal', 'body'];
@@ -410,23 +374,21 @@
                 currentQuestion = groupAData[Math.floor(Math.random() * groupAData.length)];
                 currentQuestion.correctGroup = 'A';
                 
-                // グループA（正解）から問題を除く、類似度の高い4つを選択
-                displayedGroupA = getSimilarItems(
-                    currentQuestion,
+                // グループAから問題を除く4つを選択
+                displayedGroupA = getRandomItems(
                     groupAData.filter(item => item.kanji !== currentQuestion.kanji),
                     4
                 );
-                // グループB（不正解）からも類似度の高い4つを選択
-                displayedGroupB = getSimilarItems(currentQuestion, groupBData, 4);
+                // グループBから4つ選択
+                displayedGroupB = getRandomItems(groupBData, 4);
             } else {
                 currentQuestion = groupBData[Math.floor(Math.random() * groupBData.length)];
                 currentQuestion.correctGroup = 'B';
                 
-                // グループA（不正解）からも類似度の高い4つを選択
-                displayedGroupA = getSimilarItems(currentQuestion, groupAData, 4);
-                // グループB（正解）から問題を除く、類似度の高い4つを選択
-                displayedGroupB = getSimilarItems(
-                    currentQuestion,
+                // グループAから4つ選択
+                displayedGroupA = getRandomItems(groupAData, 4);
+                // グループBから問題を除く4つを選択
+                displayedGroupB = getRandomItems(
                     groupBData.filter(item => item.kanji !== currentQuestion.kanji),
                     4
                 );
@@ -528,5 +490,3 @@
     </script>
 </body>
 </html>
-     
-     
