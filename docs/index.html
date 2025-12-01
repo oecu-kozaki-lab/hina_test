@@ -410,21 +410,21 @@
                 currentQuestion = groupAData[Math.floor(Math.random() * groupAData.length)];
                 currentQuestion.correctGroup = 'A';
                 
-                // グループAから問題を除く、類似度の高い4つを選択
+                // グループA（正解）から問題を除く、類似度の高い4つを選択
                 displayedGroupA = getSimilarItems(
                     currentQuestion,
                     groupAData.filter(item => item.kanji !== currentQuestion.kanji),
                     4
                 );
-                // グループBから類似度の高い4つを選択
+                // グループB（不正解）からも類似度の高い4つを選択
                 displayedGroupB = getSimilarItems(currentQuestion, groupBData, 4);
             } else {
                 currentQuestion = groupBData[Math.floor(Math.random() * groupBData.length)];
                 currentQuestion.correctGroup = 'B';
                 
-                // グループAから類似度の高い4つを選択
+                // グループA（不正解）からも類似度の高い4つを選択
                 displayedGroupA = getSimilarItems(currentQuestion, groupAData, 4);
-                // グループBから問題を除く、類似度の高い4つを選択
+                // グループB（正解）から問題を除く、類似度の高い4つを選択
                 displayedGroupB = getSimilarItems(
                     currentQuestion,
                     groupBData.filter(item => item.kanji !== currentQuestion.kanji),
@@ -528,3 +528,5 @@
     </script>
 </body>
 </html>
+     
+     
