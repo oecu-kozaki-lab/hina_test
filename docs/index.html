@@ -293,9 +293,9 @@
 
         async function loadFile() {
             try {
-                const response = await fetch('漢字リスト.txt');
+                const response = await fetch('漢字リスト.csv');
                 if (!response.ok) {
-                    throw new Error(`漢字リスト.txt が見つかりません (Status: ${response.status})`);
+                    throw new Error(`漢字リスト.csv が見つかりません (Status: ${response.status})`);
                 }
                 const text = await response.text();
                 return text;
@@ -328,7 +328,7 @@
                     <p>${error.message}</p>
                     <p style="margin-top: 10px;">
                         <strong>解決方法:</strong><br>
-                        1. 漢字リスト.txt をHTMLファイルと同じフォルダに配置してください<br>
+                        1. 漢字リスト.csv をHTMLファイルと同じフォルダに配置してください<br>
                         2. ローカルサーバーを使用してください（例: Live Server、Python -m http.server など）
                     </p>
                 `;
