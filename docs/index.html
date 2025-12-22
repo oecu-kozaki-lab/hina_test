@@ -291,11 +291,11 @@
             body: '体の部位'
         };
 
-        async function loadFile(filename) {
+        async function loadFile() {
             try {
-                const response = await fetch(filename);
+                const response = await fetch('漢字リスト.txt');
                 if (!response.ok) {
-                    throw new Error(`${filename} が見つかりません (Status: ${response.status})`);
+                    throw new Error(`漢字リスト.txt が見つかりません (Status: ${response.status})`);
                 }
                 const text = await response.text();
                 return text;
@@ -305,20 +305,16 @@
         }
 
         async function loadAllFiles() {
-            const files = ['自然.txt', '色.txt', '身体.txt', '動物.txt'];
-            
             try {
-                for (const file of files) {
-                    const content = await loadFile(file);
-                    const lines = content.split('\n').filter(line => line.trim() && !line.startsWith('漢字'));
-                    
-                    lines.forEach(line => {
-                        const [kanji, reading] = line.split(',');
-                        if (kanji && reading) {
-                            allData.push({ kanji: kanji.trim(), reading: reading.trim() });
-                        }
-                    });
-                }
+                const content = await loadFile();
+                const lines = content.split('\n').filter(line => line.trim() && !line.startsWith('漢字'));
+                
+                lines.forEach(line => {
+                    const [kanji, reading] = line.split(',');
+                    if (kanji && reading) {
+                        allData.push({ kanji: kanji.trim(), reading: reading.trim() });
+                    }
+                });
 
                 document.getElementById('loading').classList.add('hidden');
                 
@@ -332,7 +328,7 @@
                     <p>${error.message}</p>
                     <p style="margin-top: 10px;">
                         <strong>解決方法:</strong><br>
-                        1. 自然.txt、色.txt、身体.txt、動物.txt をHTMLファイルと同じフォルダに配置してください<br>
+                        1. 漢字リスト.txt をHTMLファイルと同じフォルダに配置してください<br>
                         2. ローカルサーバーを使用してください（例: Live Server、Python -m http.server など）
                     </p>
                 `;
