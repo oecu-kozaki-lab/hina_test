@@ -685,7 +685,7 @@
             <h1 class="screen-title">漢字分類謎解き</h1>
             <p style="margin-bottom: 30px; font-size: 1.2em; color: #666; line-height: 1.6;">
                 漢字の共通点を見つける謎解きです。<br>
-                1セット10問。<br>
+                1セット5問。<br>
                 全問正解を目指しましょう！
             </p>
 
@@ -699,8 +699,6 @@
                     <option value="24000">C:閲覧数24000以上</option>
                     <option value="30000">D:閲覧数30000以上</option>
                     <option value="36000">E:閲覧数36000以上</option>
-                    <option value="42000">F:閲覧数42000以上</option>
-                    <option value="48000">G:閲覧数48000以上</option>
                 </select>
             </div>
             <button class="start-btn primary" onclick="startGame(true)">
@@ -734,7 +732,7 @@
 
     <!-- ゲーム進行状況 -->
     <div id="progressContainer" class="progress-container hidden">
-        第 <span id="currentQuestionNum">1</span> / 10 問
+        第 <span id="currentQuestionNum">1</span> / 5 問
     </div>
     <div class="container">
         <h1>漢字分類謎解き</h1>
@@ -1406,8 +1404,6 @@
                 case '24000': filename = '閲覧数24000以上_漢字リスト.csv'; break;
                 case '30000': filename = '閲覧数30000以上_漢字リスト.csv'; break;
                 case '36000': filename = '閲覧数36000以上_漢字リスト.csv'; break;
-                case '42000': filename = '閲覧数42000以上_漢字リスト.csv'; break;
-                case '48000': filename = '閲覧数48000以上_漢字リスト.csv'; break;
                 default: filename = '閲覧数12000以上_漢字リスト.csv';
             }
 
