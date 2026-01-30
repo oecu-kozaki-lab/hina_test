@@ -282,8 +282,6 @@ http://www.wikidata.org/entity/Q10939206,天命,てんめい
 http://www.wikidata.org/entity/Q10940502,天皇,てんのう
 http://www.wikidata.org/entity/Q11060274,版画,はんが
 http://www.wikidata.org/entity/Q11087744,明和,めいわ
-http://www.wikidata.org/entity/Q11198623,E電,Eでん
-http://www.wikidata.org/entity/Q11255946,Z会,Zかい
 http://www.wikidata.org/entity/Q11352524,一宮,いちのみや
 http://www.wikidata.org/entity/Q11354623,三和,さんわ
 http://www.wikidata.org/entity/Q11367841,中食,ちゅうしょく
@@ -974,7 +972,6 @@ http://www.wikidata.org/entity/Q108558640,雨穴,あめあな
 http://www.wikidata.org/entity/Q108778715,丸久,まるきゅう
 http://www.wikidata.org/entity/Q108882869,音楽,おんがく
 http://www.wikidata.org/entity/Q110420017,刀語,かたなご
-http://www.wikidata.org/entity/Q110726557,F値,Fあたい
 http://www.wikidata.org/entity/Q110941455,公家,くげ
 http://www.wikidata.org/entity/Q112189385,空港,くうこう
 http://www.wikidata.org/entity/Q112233636,守護,しゅご
@@ -1241,7 +1238,6 @@ http://www.wikidata.org/entity/Q7548402,風花,かざばな
 http://www.wikidata.org/entity/Q7827817,年寄,としより
 http://www.wikidata.org/entity/Q7968677,害虫,がいちゅう
 http://www.wikidata.org/entity/Q8050051,人和,にんわ
-http://www.wikidata.org/entity/Q8298445,王平,おうたいら
 http://www.wikidata.org/entity/Q8525293,白山,はくさん
 http://www.wikidata.org/entity/Q9095836,電波,でんぱ
 http://www.wikidata.org/entity/Q9335294,洗礼,せんれい
@@ -1479,7 +1475,6 @@ http://www.wikidata.org/entity/Q159810,経済,けいざい
 http://www.wikidata.org/entity/Q160857,馬力,ばりき
 http://www.wikidata.org/entity/Q161524,仮面,かめん
 http://www.wikidata.org/entity/Q163727,学士,がくし
-http://www.wikidata.org/entity/Q164818,Q熱,Qねつ
 http://www.wikidata.org/entity/Q166902,原色,げんしょく
 http://www.wikidata.org/entity/Q170417,口径,こうけい
 http://www.wikidata.org/entity/Q170518,熱傷,ねっしょう
@@ -1707,7 +1702,6 @@ http://www.wikidata.org/entity/Q11059428,市制,しせい
 http://www.wikidata.org/entity/Q11080166,文覚,もんがく
 http://www.wikidata.org/entity/Q11235116,精米,せいまい
 http://www.wikidata.org/entity/Q11252966,水害,すいがい
-http://www.wikidata.org/entity/Q11255957,Z旗,Zはた
 http://www.wikidata.org/entity/Q11267892,一和,いちわ
 http://www.wikidata.org/entity/Q11268560,作詞,さくし
 http://www.wikidata.org/entity/Q11284628,博多,はかた
@@ -1775,7 +1769,7 @@ http://www.wikidata.org/entity/Q13403578,後宮,あとみや
 http://www.wikidata.org/entity/Q13423122,七夕,たなばた
 http://www.wikidata.org/entity/Q13442814,論文,ろんぶん
 http://www.wikidata.org/entity/P654,方位,ほうい
-http://www.wikidata.org/entity/Q13552915,反中,はんなか
+http://www.wikidata.org/entity/Q13552915,反中,はんちゅう
 http://www.wikidata.org/entity/Q13561011,休日,きゅうじつ
 http://www.wikidata.org/entity/Q13711068,高氏,たかうじ
 http://www.wikidata.org/entity/Q14566073,羊肉,ひつじにく
@@ -2725,9 +2719,7 @@ http://www.wikidata.org/entity/Q8081687,王様,おうさま
 http://www.wikidata.org/entity/Q8189234,候文,そうろうぶん
 http://www.wikidata.org/entity/Q10855147,開国,かいこく
 http://www.wikidata.org/entity/Q10901124,酒保,しゅほ
-http://www.wikidata.org/entity/Q11192805,B層,Bそう
 http://www.wikidata.org/entity/Q11245829,歩荷,ぼっか
-http://www.wikidata.org/entity/Q11255956,Z旗,Zはた
 http://www.wikidata.org/entity/Q11352523,一宮,いちのみや
 http://www.wikidata.org/entity/Q11358245,三関,さんかん
 http://www.wikidata.org/entity/Q11360913,下戸,げこ
@@ -3594,7 +3586,6 @@ http://www.wikidata.org/entity/Q801810,改札,かいさつ
 http://www.wikidata.org/entity/Q833475,中道,ちゅうどう
 http://www.wikidata.org/entity/Q833734,声調,せいちょう
 http://www.wikidata.org/entity/Q841440,帰化,きか
-http://www.wikidata.org/entity/Q845958,B円,Bえん
 http://www.wikidata.org/entity/Q852152,首相,しゅしょう
 http://www.wikidata.org/entity/Q854418,中国,ちゅうごく
 http://www.wikidata.org/entity/Q857010,天命,てんめい
@@ -3948,4 +3939,5 @@ http://www.wikidata.org/entity/Q107758874,干物,かんぶつ
 http://www.wikidata.org/entity/Q108762484,温泉,おんせん
 http://www.wikidata.org/entity/Q111487500,冬馬,とうま
 http://www.wikidata.org/entity/Q112292077,油田,ゆでん
+
 
