@@ -39,3 +39,5 @@ https://oecu-kozaki-lab.github.io/hina_test/
 
 4. **ダウンロードした物の提案手法**
    - Googleドライブに提出用のフォルダーを作成するのでそのファイル内に自分の名前のフォルダを作成してダウンロードした物をいれてください。
+   - 場所はKozakiLab→卒研2025→卒業研究資料2025→GP22A122_中川陽向汰→
+   https://drive.google.com/drive/u/0/folders/1Uu8fjEmx3Zx9weW3iWdtb0CCjXrVPiw9
