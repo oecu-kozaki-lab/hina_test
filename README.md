@@ -1,5 +1,5 @@
 # 評価手順
-https://oecu-kozaki-lab.github.io/hina_test/
+謎解き→https://oecu-kozaki-lab.github.io/hina_test/
 
 ## 1. プレイ実行
 各データセット（A〜C）について、以下の手順でプレイを行ってください。
